@@ -1,6 +1,6 @@
 <?php
 /** 
- * @package AlecaddPlugin
+ * @package ibbhaber
 */
 /*
 Plugin Name: First-Plugin
@@ -21,80 +21,41 @@ defined('ABSPATH') or die('Hey, you can\t access this file, you silly human!');
 //	exit;
 //}
 
-class IbbHaberPlugin{
+if( !class_exists('IbbHaberPlugin')){
+	class IbbHaberPlugin{
 
-	//Public
-		//Her yerden erişilebilir.
+		function register(){
+			add_action('admin_enqueue_scripts', array($this,'enqueue'));
+		}
 
-	//Protected
-		//Yalnızca class içerisinden erişim.
+		protected function create_post_type(){ //Construct içerisinde kullanıldığından protected olmasına rağmen dışardan erişilebilir.
+			add_action( 'init', array($this, 'custom_post_type') );
+		}
 
-	//Private
+		static function custom_post_type(){
+			register_post_type( 'book', ['public' => true, 'label' => 'Books'] );
+		}
 
+		function enqueue(){
+			// enqueue all our scripts
+			wp_enqueue_style( 'mypluginstyle', plugins_url( '/assets/mystyle.css', __FILE__  ));
+			wp_enqueue_script( 'mypluginscript', plugins_url( '/assets/myscript.js', __FILE__  ));
+		}
 
-
-
-
-	function __construct(){
-		//$this->print_stuff();
+		function activate(){
+			require_once plugin_dir_path( __FILE__ ) . 'inc/ibbhaber-plugin-activate.php';
+		}
 	}
 
-	protected function create_post_type(){ //Construct içerisinde kullanıldığından protected olmasına rağmen dışardan erişilebilir.
-		add_action( 'init', array($this, 'custom_post_type') );
-	}
 
-	function register(){
-		add_action('admin_enqueue_scripts', array($this,'enqueue'));
-	}
-
-	function activate(){
-		$this->custom_post_type();
-		flush_rewrite_rules();
-	}
-
-	function deactivate(){
-		flush_rewrite_rules();
-	}
-
-	static function custom_post_type(){
-		register_post_type( 'book', ['public' => true, 'label' => 'Books'] );
-	}
-
-	function enqueue(){
-		// enqueue all our scripts
-		wp_enqueue_style( 'mypluginstyle', plugins_url( '/assets/mystyle.css', __FILE__  ));
-		wp_enqueue_script( 'mypluginscript', plugins_url( '/assets/myscript.js', __FILE__  ));
-	}
-
-	private function print_stuff(){
-		var_dump(['test Cihat']);
-	}
-}
-
-class SecondClass extends IbbHaberPlugin{
-
-	function __construct(){
-		//$this->print_stuff();
-	}
-
-	function register_post_type(){
-		$this -> create_post_type();
-	}
-}
-
-
-
-if(class_exists('IbbHaberPlugin')){
-	$ibbHaberPlugin = new IbbHaberPlugin('IBB Haber Plugin Başlatıldı');
+	$ibbHaberPlugin = new IbbHaberPlugin();
 	$ibbHaberPlugin -> register();
+
+
+	//activation
+	register_activation_hook(__FILE__,array($ibbHaberPlugin,'activate'));
+	//add_action( 'init', 'function_name' );
+	//deactivation
+	require_once plugin_dir_path( __FILE__ ) . 'inc/ibbhaber-plugin-deactivate.php';
+	register_deactivation_hook(__FILE__,array('IbbHaberPluginDeactivate','deactivate'));
 }
-
-
-$secondClass = new SecondClass();
-$secondClass -> register_post_type();
-
-//activation
-register_activation_hook(__FILE__,array($ibbHaberPlugin,'activate'));
-//add_action( 'init', 'function_name' );
-//deactivation
-register_deactivation_hook(__FILE__,array($ibbHaberPlugin,'deactivate'));
