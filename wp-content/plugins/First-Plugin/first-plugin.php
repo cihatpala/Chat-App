@@ -10,16 +10,28 @@ Author URI: cihatpala.com
 License: GPLv2 or latter
 */
 
-//if ( ! defined ( 'ABSPATH') ){
-//	die;
-//}
+/*
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+Copyright 2005-2015 Automattic, Inc.
+*/
 
 defined('ABSPATH') or die('Hey, you can\t access this file, you silly human!');
 
-//if( !function_exists( 'add_action' ) ){
-//	echo 'Hey, you can\t access this file, you silly human!';
-//	exit;
-//}
+if(file_exists(dirname(__FILE__).'/vendor/autoload.php')){
+	require_once dirname(__FILE__).'/vendor/autoload.php';
+}
+
+use Incs\Activate;
 
 if( !class_exists('IbbHaberPlugin')){
 	class IbbHaberPlugin{
@@ -68,7 +80,8 @@ if( !class_exists('IbbHaberPlugin')){
 		}
 
 		function activate(){
-			require_once plugin_dir_path( __FILE__ ) . 'inc/ibbhaber-plugin-activate.php';
+			//require_once plugin_dir_path( __FILE__ ) . 'inc/ibbhaber-plugin-activate.php';
+			Activate::activate();
 		}
 	}
 
