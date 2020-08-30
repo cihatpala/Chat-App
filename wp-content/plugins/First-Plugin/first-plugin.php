@@ -24,8 +24,33 @@ defined('ABSPATH') or die('Hey, you can\t access this file, you silly human!');
 if( !class_exists('IbbHaberPlugin')){
 	class IbbHaberPlugin{
 
+
+		public $plugin;
+
+		function __construct(){
+			$this->plugin = plugin_basename( __FILE__ ); 
+		}
+
 		function register(){
 			add_action('admin_enqueue_scripts', array($this,'enqueue'));
+
+			add_action('admin_menu', array($this,'add_admin_pages'));
+
+			add_filter("plugin_action_links_$this->plugin", array($this, 'settings_link'));
+		}
+
+		public function settings_link($links){
+			//add custom settings link
+			$settings_link = '<a href="options-general.php?page=ibbhaber-plugin">Settings</a>';
+			array_push($links, $settings_link);
+			return $links;
+		}
+
+		public function add_admin_pages(){
+			add_menu_page('Ibb Haber Plugin', 'IbbHaber', 'manage_options', 'ibbhaber-plugin', array($this,'admin_index'), 'dashicons-store', 110 );
+		}
+		public function admin_index(){
+			require_once plugin_dir_path( __FILE__ ) . 'templates/admin.php';
 		}
 
 		protected function create_post_type(){ //Construct içerisinde kullanıldığından protected olmasına rağmen dışardan erişilebilir.
