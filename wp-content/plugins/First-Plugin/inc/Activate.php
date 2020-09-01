@@ -3,7 +3,7 @@
  * @package ibbhaber
 */
 
-namespace Incs;
+namespace Inc;
 
 class Activate{
 

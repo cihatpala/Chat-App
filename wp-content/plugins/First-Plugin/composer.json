@@ -1,6 +1,6 @@
 {
-    "name": "pala/ibbhaber",
-    "description": "Harika eklenti gelistirme ornegi",
+    "name": "pala/first-plugin",
+    "description": "Ibb Haber Wordpress Plugin Development",
     "type": "project",
     "license": "GPL",
     "authors": [

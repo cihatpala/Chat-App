@@ -27,11 +27,14 @@ Copyright 2005-2015 Automattic, Inc.
 
 defined('ABSPATH') or die('Hey, you can\t access this file, you silly human!');
 
-if(file_exists(dirname(__FILE__).'/vendor/autoload.php')){
-	require_once dirname(__FILE__).'/vendor/autoload.php';
+if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
+	require_once dirname( __FILE__ ) . '/vendor/autoload.php';
 }
 
-use Incs\Activate;
+use Inc\Activate;
+use Inc\Deactivate;
+//require_once dirname( __FILE__ ) . 'inc/Admin/AdminPages.php'; Bunun yerine alttaki satır kullanılabilir.
+use Inc\Admin\AdminPages;
 
 if( !class_exists('IbbHaberPlugin')){
 	class IbbHaberPlugin{
@@ -40,7 +43,8 @@ if( !class_exists('IbbHaberPlugin')){
 		public $plugin;
 
 		function __construct(){
-			$this->plugin = plugin_basename( __FILE__ ); 
+			$this->plugin = plugin_basename( __FILE__ );
+			
 		}
 
 		function register(){
@@ -79,8 +83,7 @@ if( !class_exists('IbbHaberPlugin')){
 			wp_enqueue_script( 'mypluginscript', plugins_url( '/assets/myscript.js', __FILE__  ));
 		}
 
-		function activate(){
-			//require_once plugin_dir_path( __FILE__ ) . 'inc/ibbhaber-plugin-activate.php';
+		static function activate(){
 			Activate::activate();
 		}
 	}
@@ -94,6 +97,5 @@ if( !class_exists('IbbHaberPlugin')){
 	register_activation_hook(__FILE__,array($ibbHaberPlugin,'activate'));
 	//add_action( 'init', 'function_name' );
 	//deactivation
-	require_once plugin_dir_path( __FILE__ ) . 'inc/ibbhaber-plugin-deactivate.php';
-	register_deactivation_hook(__FILE__,array('IbbHaberPluginDeactivate','deactivate'));
+	register_deactivation_hook(__FILE__,array('Deactivate','deactivate'));
 }
