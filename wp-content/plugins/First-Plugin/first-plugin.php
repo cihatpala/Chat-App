@@ -31,71 +31,9 @@ if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
 	require_once dirname( __FILE__ ) . '/vendor/autoload.php';
 }
 
-use Inc\Activate;
-use Inc\Deactivate;
-//require_once dirname( __FILE__ ) . 'inc/Admin/AdminPages.php'; Bunun yerine alttaki satır kullanılabilir.
-use Inc\Admin\AdminPages;
+define('PLUGIN_PATH', plugin_dir_path( __FILE__ ));
+define('PLUGIN_URL', plugin_dir_url( __FILE__ ));
 
-if( !class_exists('IbbHaberPlugin')){
-	class IbbHaberPlugin{
-
-
-		public $plugin;
-
-		function __construct(){
-			$this->plugin = plugin_basename( __FILE__ );
-			
-		}
-
-		function register(){
-			add_action('admin_enqueue_scripts', array($this,'enqueue'));
-
-			add_action('admin_menu', array($this,'add_admin_pages'));
-
-			add_filter("plugin_action_links_$this->plugin", array($this, 'settings_link'));
-		}
-
-		public function settings_link($links){
-			//add custom settings link
-			$settings_link = '<a href="options-general.php?page=ibbhaber-plugin">Settings</a>';
-			array_push($links, $settings_link);
-			return $links;
-		}
-
-		public function add_admin_pages(){
-			add_menu_page('Ibb Haber Plugin', 'IbbHaber', 'manage_options', 'ibbhaber-plugin', array($this,'admin_index'), 'dashicons-store', 110 );
-		}
-		public function admin_index(){
-			require_once plugin_dir_path( __FILE__ ) . 'templates/admin.php';
-		}
-
-		protected function create_post_type(){ //Construct içerisinde kullanıldığından protected olmasına rağmen dışardan erişilebilir.
-			add_action( 'init', array($this, 'custom_post_type') );
-		}
-
-		static function custom_post_type(){
-			register_post_type( 'book', ['public' => true, 'label' => 'Books'] );
-		}
-
-		function enqueue(){
-			// enqueue all our scripts
-			wp_enqueue_style( 'mypluginstyle', plugins_url( '/assets/mystyle.css', __FILE__  ));
-			wp_enqueue_script( 'mypluginscript', plugins_url( '/assets/myscript.js', __FILE__  ));
-		}
-
-		static function activate(){
-			Activate::activate();
-		}
-	}
-
-
-	$ibbHaberPlugin = new IbbHaberPlugin();
-	$ibbHaberPlugin -> register();
-
-
-	//activation
-	register_activation_hook(__FILE__,array($ibbHaberPlugin,'activate'));
-	//add_action( 'init', 'function_name' );
-	//deactivation
-	register_deactivation_hook(__FILE__,array('Deactivate','deactivate'));
+if(class_exists('Inc\\Init')){
+	Inc\Init::register_services();
 }

@@ -3,7 +3,7 @@
  * @package ibbhaber
 */
 
-namespace Inc;
+namespace Inc\Base;
 
 class Deactivate{
 
