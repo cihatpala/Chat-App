@@ -1,0 +1,14 @@
+# IbbHaber Plugin Development
+
+Bu uygulama ibbhaber adına geliştirilmiş haber uygulaması otomatikleştirmesi için oluşturulmuştur.
+
+* Moduler Administration Area
+* Custom Post Type CPT Manager 
+* Custom Taxanomy Manager
+* Widget to Upload and Diaply media in sidebars
+* Post and Pages Gallery Integration
+* Taxanomial section: Comment in the front-end, ADmins can approve comments, select which comments to display
+* Custom template sections
+* Ajax based Login/Register system 
+* Membership protected area
+* Chat system
