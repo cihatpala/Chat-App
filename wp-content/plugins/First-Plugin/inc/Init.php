@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @package
+ */
 namespace Inc;
 
 final class Init{
