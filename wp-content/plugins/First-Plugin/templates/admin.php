@@ -1,1 +1,1 @@
-<h1>IbbHaber Plugin</h1>
+<h1>IBBHABER Base Page (Required for Plugin Development)</h1>
