@@ -22,12 +22,12 @@
         return require_once("$this->plugin_path/templates/widget.php");
     }
     
-    public function ibbhaberOptionsGroup( $input){
-        return $input;
-    }
-    public function ibbhaberAdminSection( $input){
-        echo 'Harika bir başlangıç!';
-    }
+    // public function ibbhaberOptionsGroup( $input){
+    //     return $input;
+    // }
+    // public function ibbhaberAdminSection( $input){
+    //     echo 'Harika bir başlangıç!';
+    // }
 
     public function ibbhaberTextExample( $input){
         $value= esc_attr(get_option('text_example', $default));
