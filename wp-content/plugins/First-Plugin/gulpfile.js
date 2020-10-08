@@ -28,7 +28,7 @@ var browserSync  = require( 'browser-sync' ).create();
 var reload       = browserSync.reload;
 
 // Project related variables
-var projectURL   = 'http://test.dev';
+var projectURL   = 'http://ibbhaber.test';
 
 var styleSRC     = './src/scss/mystyle.scss';
 var styleURL     = './assets/';
@@ -44,13 +44,13 @@ var phpWatch     = './**/*.php';
 // Tasks
 gulp.task( 'browser-sync', function() {
 	browserSync.init({
-		//proxy: projectURL,
-		//https: {
-		//	key: '/Users/alecaddd/.valet/Certificates/test.dev.key',
-		//	cert: '/Users/alecaddd/.valet/Certificates/test.dev.crt'
-		//},
-		//injectChanges: true,
-		//open: false
+		proxy: projectURL,
+		https: {
+			key: '',
+			cert: ''
+		},
+		injectChanges: true,
+		open: false
 	});
 });
 

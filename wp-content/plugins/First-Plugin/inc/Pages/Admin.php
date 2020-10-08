@@ -239,9 +239,7 @@ class Admin extends BaseController{
                 'args'=>array(
                     'label_for' =>'chat_manager',
                     'class' => 'ui-toggle'
-                )),
-            
-    
+                ))
         );
 
         $this->settings->setFields($args);
