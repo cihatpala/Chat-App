@@ -82,14 +82,12 @@ class Admin extends BaseController{
 
     public function setSettings(){
 
-        $args = array();
-        foreach ($this->managers as $key => $value) {
-            $args[] = array(
+        $args = array(
+            array(
                 'option_group' =>'ibbhaber_plugin_settings',
-                'option_name' => $key,
+                'option_name' => 'ibbhaber_plugin',
                 'callback' => array($this->callbacks, 'checkboxSanitize')
-            );
-        }
+            ));
 
         $this->settings->setSettings($args);
     }
@@ -118,6 +116,7 @@ class Admin extends BaseController{
                 'page' => 'ibbhaber_plugin',
                 'section' =>'ibbhaber_admin_index',
                 'args'=>array(
+                    'option_name' =>'ibbhaber_plugin',
                     'label_for' => $key,
                     'class' => 'ui-toggle'
                 )
