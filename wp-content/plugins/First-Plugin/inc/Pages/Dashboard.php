@@ -10,12 +10,12 @@ use \Inc\Base\BaseController;
 use \Inc\Api\Callbacks\AdminCallbacks;
 use \Inc\Api\Callbacks\ManagerCallbacks;
 
-class Admin extends BaseController{
+class Dashboard extends BaseController{
 
     public $settings;
     public $callbacks;
     public $pages = array();
-    public $subpages = array();
+    // public $subpages = array();
 
 	public function register(){
         $this->settings = new SettingsApi();
@@ -25,13 +25,13 @@ class Admin extends BaseController{
 
         $this->setPages();
 
-        $this->setSubpages();
+        // $this->setSubpages();
 
         $this->setSettings();
         $this->setSections();
         $this->setFields();
 
-		$this->settings->addPages( $this->pages )->withSubPage( 'Dashboard' )->addSubPages( $this->subpages )->register();
+		$this->settings->addPages( $this->pages )->withSubPage( 'Dashboard' )->register();
     }
     
     public function setPages(){
@@ -50,35 +50,35 @@ class Admin extends BaseController{
             );
     }
 
-    public function setSubpages(){
+    // public function setSubpages(){
 
-        $this->subpages = array( 
-            array(
-                'parent_slug' => 'ibbhaber_plugin', 
-                'page_title' => 'Custom Post Type', 
-                'menu_title' => 'CPT', 
-                'capability' => 'manage_options', 
-                'menu_slug' => 'ibbhaber_cpt', 
-                'callback' => array( $this->callbacks, 'adminCpt')
-            ),
-            array(
-                'parent_slug' => 'ibbhaber_plugin', 
-                'page_title' => 'Custom Taxonomies', 
-                'menu_title' => 'Taxonomies', 
-                'capability' => 'manage_options', 
-                'menu_slug' => 'alecaddd_taxonomies', 
-                'callback' => array( $this->callbacks, 'adminTaxonomy')
-            ),
-            array(
-                'parent_slug' => 'ibbhaber_plugin', 
-                'page_title' => 'Custom Widgets', 
-                'menu_title' => 'Widgets', 
-                'capability' => 'manage_options', 
-                'menu_slug' => 'ibbhaber_widgets', 
-                'callback' => array( $this->callbacks, 'adminWidget')
-            )
-            );
-    }
+    //     $this->subpages = array( 
+    //         array(
+    //             'parent_slug' => 'ibbhaber_plugin', 
+    //             'page_title' => 'Custom Post Type', 
+    //             'menu_title' => 'CPT', 
+    //             'capability' => 'manage_options', 
+    //             'menu_slug' => 'ibbhaber_cpt', 
+    //             'callback' => array( $this->callbacks, 'adminCpt')
+    //         ),
+    //         array(
+    //             'parent_slug' => 'ibbhaber_plugin', 
+    //             'page_title' => 'Custom Taxonomies', 
+    //             'menu_title' => 'Taxonomies', 
+    //             'capability' => 'manage_options', 
+    //             'menu_slug' => 'alecaddd_taxonomies', 
+    //             'callback' => array( $this->callbacks, 'adminTaxonomy')
+    //         ),
+    //         array(
+    //             'parent_slug' => 'ibbhaber_plugin', 
+    //             'page_title' => 'Custom Widgets', 
+    //             'menu_title' => 'Widgets', 
+    //             'capability' => 'manage_options', 
+    //             'menu_slug' => 'ibbhaber_widgets', 
+    //             'callback' => array( $this->callbacks, 'adminWidget')
+    //         )
+    //         );
+    // }
 
     public function setSettings(){
 
