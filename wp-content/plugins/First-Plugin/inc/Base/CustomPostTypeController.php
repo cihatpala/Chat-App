@@ -15,41 +15,41 @@ use Inc\Api\Callbacks\AdminCallbacks;
 */
 class CustomPostTypeController extends BaseController
 {
-    public $settings;
+	public $settings;
 
-    public $callbacks;
+	public $callbacks;
 
-    public $cpt_callbacks;
+	public $cpt_callbacks;
 
-    public $subpages = array();
-    
-    public $custom_post_types = array();
+	public $subpages = array();
+
+	public $custom_post_types = array();
 
 	public function register()
 	{
-		if ( ! $this->activated( 'cpt_manager' ) ) return;
+        if ( ! $this->activated( 'cpt_manager' ) ) return;
 
 		$this->settings = new SettingsApi();
 
-        $this->callbacks = new AdminCallbacks();
-        
+		$this->callbacks = new AdminCallbacks();
+
 		$this->cpt_callbacks = new CptCallbacks();
 
-        $this->setSubpages();
+		$this->setSubpages();
 
-        $this->setSettings();
+		$this->setSettings();
 
-        $this->setSections();
+		$this->setSections();
 
-        $this->setFields();
+		$this->setFields();
 
-        $this->settings->addSubPages( $this->subpages )->register();
+		$this->settings->addSubPages( $this->subpages )->register();
 
-        $this->storeCustomPostTypes();
+		$this->storeCustomPostTypes();
 
-        if(! empty($this->custom_post_types)){
-            add_action( 'init', array( $this, 'registerCustomPostTypes' ) );
-        }
+		if ( ! empty( $this->custom_post_types ) ) {
+			add_action( 'init', array( $this, 'registerCustomPostTypes' ) );
+		}
 	}
 
 	public function setSubpages()
@@ -103,7 +103,8 @@ class CustomPostTypeController extends BaseController
                 'args'=>array(
                     'option_name' =>'ibbhaber_plugin_cpt',
                     'label_for' => 'post_type',
-                    'placeholder' => 'eg. product'
+                    'placeholder' => 'eg. product',
+					'array' => 'post_type'
                 )
                 ),
                 array(
@@ -115,7 +116,8 @@ class CustomPostTypeController extends BaseController
                     'args'=>array(
                         'option_name' =>'ibbhaber_plugin_cpt',
                         'label_for' => 'singular_name',
-                        'placeholder' => 'eg. Product'
+                        'placeholder' => 'eg. Product',
+                        'array' => 'post_type'
                     )
                 ),
                 array(
@@ -127,7 +129,8 @@ class CustomPostTypeController extends BaseController
                     'args'=>array(
                         'option_name' =>'ibbhaber_plugin_cpt',
                         'label_for' => 'plural_name',
-                        'placeholder' => 'eg. Products'
+                        'placeholder' => 'eg. Products',
+                        'array' => 'post_type'
                     )
                 ),
                 array(
@@ -139,7 +142,8 @@ class CustomPostTypeController extends BaseController
                     'args'=>array(
                         'option_name' =>'ibbhaber_plugin_cpt',
                         'label_for' => 'public',
-                        'class' => 'ui-toggle'
+                        'class' => 'ui-toggle',
+                        'array' => 'post_type'
                     )
                 ),
                 array(
@@ -151,7 +155,8 @@ class CustomPostTypeController extends BaseController
                     'args'=>array(
                         'option_name' =>'ibbhaber_plugin_cpt',
                         'label_for' => 'has_archive',
-                        'class' => 'ui-toggle'
+                        'class' => 'ui-toggle',
+                        'array' => 'post_type'
                     )
                 )
         );
@@ -161,56 +166,58 @@ class CustomPostTypeController extends BaseController
     
     public function storeCustomPostTypes(){
 
-        $option = get_option('ibbhaber_plugin_cpt');
-        // foreach ($options as $option) {
-            $this->custom_post_types[] = array(
-                'post_type'             => $option['post_type'],
-                'name'                  => $option['plural_name'],
-                'singular_name'         => $option['singular_name'],
-                'menu_name'             => $option['plural_name'],
-                'name_admin_bar'        => $option['singular_name'],
-                'archives'              => $option['singular_name'] . ' Archives',
-                'attributes'            => $option['singular_name'] . ' Attributes',
-                'parent_item_colon'     => 'Parent'. $option['singular_name'],
-                'all_items'             => 'All ' . $option['plural_name'],
-                'add_new_item'          => 'Add New ' . $option['singular_name'],
-                'add_new'               => 'Add New',
-                'new_item'              => 'New '. $option['singular_name'],
-                'edit_item'             => 'Edit '. $option['singular_name'],
-                'update_item'           => 'Update '. $option['singular_name'],
-                'view_item'             => 'View ' . $option['singular_name'],
-                'view_items'            => 'View '. $option['plural_name'],
-                'search_items'          => 'Search'. $option['plural_name'],
-                'not_found'             => 'No ' . $option['singular_name'] . ' Found',
-                'not_found_in_trash'    => 'No ' . $option['singular_name'] . ' Trash',
-                'featured_image'        => 'Featured Image',
-                'set_featured_image'    => 'Set Featured Image',
-                'remove_featured_image' => 'Remove Featured Image',
-                'use_featured_image'    => 'Use Featured Image',
-                'insert_into_item'      => 'Insert into ' . $option['singular_name'],
-                'uploaded_to_this_item' => 'Upload to this ' . $option['singular_name'],
-                'items_list'            => $option['plural_name'] . ' List',
-                'items_list_navigation' => $option['plural_name'] . ' List Navigation',
-                'filter_items_list'     => 'Filter' . $option['plural_name'] . ' List',
-                'label'                 => $option['singular_name'],
-                'description'           => $option['plural_name'] . 'Custom Post Type',
-                'supports'              => array('title', 'editor', 'thumbnail'),
-                'taxonomies'            => array('category', 'post_tag'),
-                'hierarchical'          => false,
-                'public'                => $option['public'],
-                'show_ui'               => true,
-                'show_in_menu'          => true,
-                'menu_position'         => 5,
-                'show_in_admin_bar'     => true,
-                'show_in_nav_menus'     => true,
-                'can_export'            => true,
-                'has_archive'           => $option['has_arcive'],
-                'exclude_from_search'   => false,
-                'publicly_queryable'    => true,
-                'capability_type'       => 'post'
-            );
-        // }
+        $options = get_option('ibbhaber_plugin_cpt');
 
+        if ( ! empty( $options )) {
+            foreach ( $options as $option ) {
+                $this->custom_post_types[] = array(
+                    'post_type'             => $option['post_type'],
+                    'name'                  => $option['plural_name'],
+                    'singular_name'         => $option['singular_name'],
+                    'menu_name'             => $option['plural_name'],
+                    'name_admin_bar'        => $option['singular_name'],
+                    'archives'              => $option['singular_name'] . ' Archives',
+                    'attributes'            => $option['singular_name'] . ' Attributes',
+                    'parent_item_colon'     => 'Parent'. $option['singular_name'],
+                    'all_items'             => 'All ' . $option['plural_name'],
+                    'add_new_item'          => 'Add New ' . $option['singular_name'],
+                    'add_new'               => 'Add New',
+                    'new_item'              => 'New '. $option['singular_name'],
+                    'edit_item'             => 'Edit '. $option['singular_name'],
+                    'update_item'           => 'Update '. $option['singular_name'],
+                    'view_item'             => 'View ' . $option['singular_name'],
+                    'view_items'            => 'View '. $option['plural_name'],
+                    'search_items'          => 'Search'. $option['plural_name'],
+                    'not_found'             => 'No ' . $option['singular_name'] . ' Found',
+                    'not_found_in_trash'    => 'No ' . $option['singular_name'] . ' Trash',
+                    'featured_image'        => 'Featured Image',
+                    'set_featured_image'    => 'Set Featured Image',
+                    'remove_featured_image' => 'Remove Featured Image',
+                    'use_featured_image'    => 'Use Featured Image',
+                    'insert_into_item'      => 'Insert into ' . $option['singular_name'],
+                    'uploaded_to_this_item' => 'Upload to this ' . $option['singular_name'],
+                    'items_list'            => $option['plural_name'] . ' List',
+                    'items_list_navigation' => $option['plural_name'] . ' List Navigation',
+                    'filter_items_list'     => 'Filter' . $option['plural_name'] . ' List',
+                    'label'                 => $option['singular_name'],
+                    'description'           => $option['plural_name'] . 'Custom Post Type',
+                    'supports'              => array('title', 'editor', 'thumbnail'),
+                    'taxonomies'            => array('category', 'post_tag'),
+                    'hierarchical'          => false,
+                    'public'                => $option['public'],
+                    'show_ui'               => true,
+                    'show_in_menu'          => true,
+                    'menu_position'         => 5,
+                    'show_in_admin_bar'     => true,
+                    'show_in_nav_menus'     => true,
+                    'can_export'            => true,
+                    'has_archive'           => $option['has_arcive'],
+                    'exclude_from_search'   => false,
+                    'publicly_queryable'    => true,
+                    'capability_type'       => 'post'
+                );
+            }
+        }
         
     }
 
