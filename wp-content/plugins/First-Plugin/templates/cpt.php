@@ -15,13 +15,25 @@
             <h3> Manage Your Custom Post Types </h3>
 
             <?php
-                $options = get_option('ibbhaber_plugin_cpt');
+                // if( ! get_option('ibbhaber_plugin_cpt' )){   
+                //     $options = array();
+                // }else {
+                //     $options = get_option('ibbhaber_plugin_cpt');
+                // }
+
+                //if-else'in aynısı aşağıda.
+                //$options = ! get_option('ibbhaber_plugin_cpt' ) ? array() : get_option('ibbhaber_plugin_cpt');
+
+                //bu da aynı ve CustomPostTypeController.php'de de kullanıldı.
+                $options = get_option('ibbhaber_plugin_cpt' ) ?: array();
 
                 echo '<table class="cpt-table"><tr><th>ID</th><th>Singular Name</th><th>Plural Name</th><th class="text-center">Public</th><th class="text-center">Archive</th><th class="text-center">Actions</th></tr>';
-                if( !empty($options)){
-                    foreach ($options as $option) {
-                        echo "<tr><td>{$option['post_type']}</td><td>{$option['singular_name']}</td><td>{$option['plural_name']}</td><td class=\"text-center\">{$option['public']}</td><td class=\"text-center\">{$option['has_archive']}</td><td class=\"text-center\"><a href=\"#\">EDIT</a> - <a href=\"#\">DELETE</a></td></tr>";
-                    }
+
+                foreach ($options as $option) {
+                    $public = isset($option['public']) ? 'TRUE' : 'FALSE';
+                    $archive = isset($option['has_archive']) ? 'TRUE' : 'FALSE';
+                    echo "<tr><td>{$option['post_type']}</td><td>{$option['singular_name']}</td><td>{$option['plural_name']}</td><td class=\"text-center\">{$public}</td><td class=\"text-center\">{$archive}</td><td class=\"text-center\"><a href=\"#\">EDIT</a> - <a href=\"#\">DELETE</a></td></tr>";
+                
                 }
                 echo '</table>';
             ?>

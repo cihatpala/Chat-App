@@ -166,9 +166,8 @@ class CustomPostTypeController extends BaseController
     
     public function storeCustomPostTypes(){
 
-        $options = get_option('ibbhaber_plugin_cpt');
+        $options = get_option('ibbhaber_plugin_cpt' ) ?: array();
 
-        if ( ! empty( $options )) {
             foreach ( $options as $option ) {
                 $this->custom_post_types[] = array(
                     'post_type'             => $option['post_type'],
@@ -204,20 +203,19 @@ class CustomPostTypeController extends BaseController
                     'supports'              => array('title', 'editor', 'thumbnail'),
                     'taxonomies'            => array('category', 'post_tag'),
                     'hierarchical'          => false,
-                    'public'                => $option['public'],
+                    'public'                => isset($option['public']) ?: false,
                     'show_ui'               => true,
                     'show_in_menu'          => true,
                     'menu_position'         => 5,
                     'show_in_admin_bar'     => true,
                     'show_in_nav_menus'     => true,
                     'can_export'            => true,
-                    'has_archive'           => $option['has_arcive'],
+                    'has_archive'           => isset($option['has_arcive']) ?: false,
                     'exclude_from_search'   => false,
                     'publicly_queryable'    => true,
                     'capability_type'       => 'post'
                 );
             }
-        }
         
     }
 
