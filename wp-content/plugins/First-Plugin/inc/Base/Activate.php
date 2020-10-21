@@ -15,6 +15,8 @@ class Activate{
             update_option('ibbhaber_plugin', $default);
         }
 
+        delete_option($option);
+
         
         if( ! get_option('ibbhaber_plugin_cpt' )){   
             update_option('ibbhaber_plugin_cpt', $default);
