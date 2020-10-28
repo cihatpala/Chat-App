@@ -18,62 +18,48 @@
     </ul>
 
     <div class="tab-content">
-        <div id="tab-1" class="tab-pane <?php echo !isset($_POST["edit_taxonomy"]) ? 'active' : ''  ?>">
-            <h3> Manage Your Custom Taxonomies</h3>
+        <div id="tab-1" class="tab-pane <?php echo !isset($_POST["edit_taxonomy"]) ? 'active' : '' ?>">
 
-            <?php
-                // if( ! get_option('ibbhaber_plugin_cpt' )){   
-                //     $options = array();
-                // }else {
-                //     $options = get_option('ibbhaber_plugin_cpt');
-                // }
+            <h3>Manage Your Custom Taxonomies</h3>
 
-                //if-else'in aynısı aşağıda.
-                //$options = ! get_option('ibbhaber_plugin_cpt' ) ? array() : get_option('ibbhaber_plugin_cpt');
+            <?php 
+                $options = get_option( 'ibbhaber_plugin_tax' ) ?: array();
 
-                //bu da aynı ve CustomPostTypeController.php'de de kullanıldı.
-            //     $options = get_option('ibbhaber_plugin_cpt' ) ?: array();
+                echo '<table class="cpt-table"><tr><th>ID</th><th>Singular Name</th><th class="text-center">Hierarchical</th><th class="text-center">Actions</th></tr>';
 
-            //     echo '<table class="cpt-table"><tr><th>ID</th><th>Singular Name</th><th>Plural Name</th><th class="text-center">Public</th><th class="text-center">Archive</th><th class="text-center">Actions</th></tr>';
+                foreach ($options as $option) {
+                    $hierarchical = isset($option['hierarchical']) ? "TRUE" : "FALSE";
 
-            //     foreach ($options as $option) {
-            //         $public = isset($option['public']) ? 'TRUE' : 'FALSE';
-            //         $archive = isset($option['has_archive']) ? 'TRUE' : 'FALSE';
-            //         echo "<tr><td>{$option['post_type']}</td><td>{$option['singular_name']}</td><td>{$option['plural_name']}</td><td class=\"text-center\">{$public}</td><td class=\"text-center\">{$archive}</td><td class=\"text-center\">"; 
-                    
-            //         echo '<form method="post" action="" class="inline-block">';
-            //         echo '<input type="hidden" name="edit_post" value="' . $option['post_type'] . '">';
-            //         submit_button('Edit', 'primary small', 'submit', false);
-            //         echo '</form> ';
+                    echo "<tr><td>{$option['taxonomy']}</td><td>{$option['singular_name']}</td><td class=\"text-center\">{$hierarchical}</td><td class=\"text-center\">";
 
+                    echo '<form method="post" action="" class="inline-block">';
+                    echo '<input type="hidden" name="edit_taxonomy" value="' . $option['taxonomy'] . '">';
+                    submit_button( 'Edit', 'primary small', 'submit', false);
+                    echo '</form> ';
 
-            //         echo '<form method="post" action="options.php" class="inline-block">';
-            //         settings_fields('ibbhaber_plugin_cpt_settings');
+                    echo '<form method="post" action="options.php" class="inline-block">';
+                    settings_fields( 'ibbhaber_plugin_tax_settings' );
+                    echo '<input type="hidden" name="remove" value="' . $option['taxonomy'] . '">';
+                    submit_button( 'Delete', 'delete small', 'submit', false, array(
+                        'onclick' => 'return confirm("Are you sure you want to delete this Custom Taxonomy? The data associated with it will not be deleted.");'
+                    ));
+                    echo '</form></td></tr>';
+                }
 
-            //         echo '<input type="hidden" name="remove" value="' . $option['post_type'] . '">';
-            //         submit_button('Delete', 'delete small', 'submit', false, array(
-            //             'onclick' => 'return confirm("Are you sure you want delete this Custom Post Type? The data associadet with it will not be deleted.");'
-            //         ));
-
-            //         echo '</form></td></tr>';
-
-
-                
-            //     }
-            //     echo '</table>';
+                echo '</table>';
             ?>
+    </div>
+        
+    <div id="tab-2" class="tab-pane <?php echo isset($_POST["edit_taxonomy"]) ? 'active' : '' ?>">
+		<form method="post" action="options.php">
+			<?php 
+				settings_fields( 'ibbhaber_plugin_tax_settings' );
+				do_settings_sections( 'ibbhaber_taxonomy' );
+				submit_button();
+			?>
+		</form>
+	</div>
 
-        </div>
-
-        <div id="tab-2" class="tab-pane <?php echo isset($_POST["edit_taxonomy"]) ? 'active' : ''  ?>">
-            <form method="post" action="options.php">
-                <?php 
-                    settings_fields('ibbhaber_plugin_tax_settings');
-                    do_settings_sections('ibbhaber_taxonomy');
-                    submit_button();
-                ?>
-            </form>
-        </div>
 
         <div id="tab-3" class="tab-pane">
             <h3>Export Your Taxonomies</h3>
