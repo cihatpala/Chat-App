@@ -140,6 +140,19 @@ class CustomTaxonomyController extends BaseController
 					'class' => 'ui-toggle',
 					'array' => 'taxonomy'
 				)
+			),
+			array(
+				'id' => 'objects',
+				'title' => 'Post Types',
+				'callback' => array($this->tax_callbacks, 'checkboxPostTypesField'),
+				'page' => 'ibbhaber_taxonomy',
+				'section' =>'ibbhaber_tax_index',
+				'args'=>array(
+					'option_name' =>'ibbhaber_plugin_tax',
+					'label_for' => 'objects',
+					'class' => 'ui-toggle',
+					'array' => 'taxonomy'
+				)
 			)
 		);
 
@@ -174,6 +187,7 @@ class CustomTaxonomyController extends BaseController
 				'show_admin_column' => true,
 				'query_var'         => true,
 				'rewrite'           => array( 'slug' => $option['taxonomy'] ),
+				'objects'           => isset($option['objects']) ? $option['objects'] : null
 			);
 
 		}
@@ -182,8 +196,8 @@ class CustomTaxonomyController extends BaseController
 	public function registerCustomTaxonomy(){
 
 		foreach ($this->taxonomies as $taxonomy) {
-			register_taxonomy($taxonomy['rewrite']['slug'], array('post'), $taxonomy);
+			$objects = isset($taxonomy['objects']) ? array_keys($taxonomy['objects']) : null;
+			register_taxonomy($taxonomy['rewrite']['slug'], $objects, $taxonomy);
 		}
-			
 	}
 }

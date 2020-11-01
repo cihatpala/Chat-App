@@ -20,7 +20,7 @@
         $this->managers = array(
             'cpt_manager' => 'Activate CPT Manager',
             'taxonomy_manager' => 'Activate Taxonomy Manager',
-            'media_widget' => 'Activate Media Widget',
+            'media_widget' => 'IbbHaber Media Widget',
             'gallery_manager' => 'Activate Gallary Manager',
             'testimonial_manager' => 'Activate Testimonial',
             'templates_manager' => 'Activate Templates Manager',
