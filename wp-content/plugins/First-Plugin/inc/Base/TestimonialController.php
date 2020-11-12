@@ -21,26 +21,119 @@ class TestimonialController extends BaseController
 	{
 		if ( ! $this->activated( 'testimonial_manager' ) ) return;
 
-		$this->settings = new SettingsApi();
+		add_action('init', array($this,'testimonial_cpt'));
 
-		$this->callbacks = new AdminCallbacks();
+		add_action('add_meta_boxes', array($this,'add_meta_boxes'));
+		add_action('save_post', array($this,'save_meta_box'));
 
-		$this->setSubpages();
-
-		$this->settings->addSubPages( $this->subpages )->register();
 	}
 
-	public function setSubpages()
-	{
-		$this->subpages = array(
-			array(
-				'parent_slug' => 'ibbhaber_plugin', 
-				'page_title' => 'Testimonial Manager', 
-				'menu_title' => 'Testimonial Manager', 
-				'capability' => 'manage_options', 
-				'menu_slug' => 'ibbhaber_testimonial', 
-				'callback' => array( $this->callbacks, 'adminTestimonial' )
-			)
+	public function testimonial_cpt(){
+
+		$labels = array(
+			'name' => 'Testimonials',
+			'singular_name' => 'Testimonial'
 		);
+
+		$args = array(
+			'labels' => $labels,
+			'public' => true,
+			'has_archive' => false,
+			'menu_icon' => 'dashicons-testimonial',
+			'exclude_from_search' => true,
+			'publicly_queryable' => false,
+			'supports' => array('title', 'editor') 
+
+		);
+		register_post_type('testimonial', $args);
 	}
+
+	public function add_meta_boxes(){
+		add_meta_box(
+			'testimonial_author',
+			'Author',
+			array($this,'render_features_box'),
+			'testimonial',
+			'side',
+			'default'
+		);
+
+	}
+
+	public function render_features_box($post)
+	{
+		wp_nonce_field( 'ibbhaber_testimonial', 'ibbhaber_testimonial_nonce' );
+
+		$data = get_post_meta( $post->ID, '_ibbhaber_testimonial_key', true );
+		$name = isset($data['name']) ? $data['name'] : '';
+		$email = isset($data['email']) ? $data['email'] : '';
+		$approved = isset($data['approved']) ? $data['approved'] : false;
+		$featured = isset($data['featured']) ? $data['featured'] : false;
+		?>
+		<p>
+			<label class="meta-label" for="ibbhaber_testimonial_author">Author Name</label>
+			<input type="text" id="ibbhaber_testimonial_author" name="ibbhaber_testimonial_author" class="widefat" value="<?php echo esc_attr( $name ); ?>">
+		</p>
+		<p>
+			<label class="meta-label" for="alecaddd_testimonial_email">Author Email</label>
+			<input type="email" id="ibbhaber_testimonial_email" name="ibbhaber_testimonial_email" class="widefat" value="<?php echo esc_attr( $email ); ?>">
+		</p>
+		<div class="meta-container">
+			<label class="meta-label w-50 text-left" for="ibbhaber_testimonial_approved">Approved</label>
+			<div class="text-right w-50 inline">
+				<div class="ui-toggle inline"><input type="checkbox" id="ibbhaber_testimonial_approved" name="ibbhaber_testimonial_approved" value="1" <?php echo $approved ? 'checked' : ''; ?>>
+					<label for="ibbhaber_testimonial_approved"><div></div></label>
+				</div>
+			</div>
+		</div>
+		<div class="meta-container">
+			<label class="meta-label w-50 text-left" for="ibbhaber_testimonial_featured">Featured</label>
+			<div class="text-right w-50 inline">
+				<div class="ui-toggle inline"><input type="checkbox" id="ibbhaber_testimonial_featured" name="ibbhaber_testimonial_featured" value="1" <?php echo $featured ? 'checked' : ''; ?>>
+					<label for="ibbhaber_testimonial_featured"><div></div></label>
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+
+
+
+	public function render_author_box($post){
+		wp_nonce_field('ibbhaber_testimonial_author','ibbhaber_testimonial_author_nonce');
+		$value =get_post_meta($post->ID,'_ibbhaber_testimonial_author_key', true);
+		?>
+		<label for="ibbhaber_testimonial_author">Testimonial Author</label>
+		<input type="text" id="ibbhaber_testimonial_author" name="ibbhaber_testimonial_author" value=<?php echo esc_attr($value); ?>>
+		<?php
+		
+	}
+
+	public function save_meta_box($post_id){
+		if (! isset($_POST['ibbhaber_testimonial_nonce'])) {
+			return $post_id;
+		}
+		$nonce = $_POST['ibbhaber_testimonial_nonce'];
+		if (! wp_verify_nonce($nonce, 'ibbhaber_testimonial')) {
+			return $post_id;
+		}
+
+		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+			return $post_id;
+		}
+
+		if(! current_user_can('edit_post',$post_id)){
+			return $post_id;
+		}
+
+		$data = array( 
+			'name' => sanitize_text_field( $_POST['ibbhaber_testimonial_author'] ),
+			'email' => sanitize_text_field( $_POST['ibbhaber_testimonial_email'] ),
+			'approved' => isset($_POST['ibbhaber_testimonial_approved']) ? 1 : 0,
+			'featured' => isset($_POST['ibbhaber_testimonial_featured']) ? 1 : 0,
+		);
+		update_post_meta($post_id, '_ibbhaber_testimonial_key',$data);
+
+	}
+
 }

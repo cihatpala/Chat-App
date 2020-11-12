@@ -21,6 +21,9 @@
     public function adminWidget(){
         return require_once("$this->plugin_path/templates/widget.php");
     }
+    public function adminTestimonial(){
+        echo "<h1><b>Burası TESTIMONIAL</b></h1>";
+    }
     
     // public function ibbhaberOptionsGroup( $input){
     //     return $input;
