@@ -1,7 +1,7 @@
 #ibbhaber-testimonial-form{
 
     .field-container{
-        border: dotted;
+        border: 2px solid rgb(56, 8, 8);
         position: relative;
         margin-bottom: 20px;
     }
@@ -10,10 +10,10 @@
         display: none;
         position: absolute;
         left: 2px;
-        bottom: -14px;
-        font-size:9px;
+        bottom: -18px;
+        font-size:12px;
         text-transform: uppercase;
-        font-weight: 600;
+        font-weight: 1000;
         letter-spacing: 0.05em;
 
         &.show{
