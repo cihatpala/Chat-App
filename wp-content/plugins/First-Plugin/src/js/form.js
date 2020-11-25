@@ -29,7 +29,22 @@ document.addEventListener('DOMContentLoaded', function(e){
 
         //ajax http post request
         let url = testimonialForm.dataset.url;
-        console.log(url);
+        let params =  new URLSearchParams(new FormData(testimonialForm));
+        
+        testimonialForm.querySelector('.js-form-submission').classList.add('show');
+
+        fetch(url,{
+            method: "POST",
+            body: params
+        }).then(res=>res.json())
+            .catch(error=>{
+                resetMessages();
+                testimonialForm.querySelector('.js-form-error').classList.add('show');
+            })
+            .then(response=>{
+                resetMessages();
+                //deal with the response
+            })
     });
 });
 
