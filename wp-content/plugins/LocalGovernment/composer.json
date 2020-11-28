@@ -1,0 +1,17 @@
+{
+    "name": "pala/first-plugin",
+    "description": "Ibb Haber Wordpress Plugin Development",
+    "type": "project",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Cihat Pala",
+            "email": "cihat_pala@hotmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {"Inc\\":"./inc"}
+    }
+}
