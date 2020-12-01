@@ -1,6 +1,6 @@
 {
-    "name": "pala/first-plugin",
-    "description": "Ibb Haber Wordpress Plugin Development",
+    "name": "pala/ibb-haber-eklenti",
+    "description": "IBB Haber Wordpress Plugin Geliştirme",
     "type": "project",
     "license": "GPL",
     "authors": [

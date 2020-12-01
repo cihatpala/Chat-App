@@ -9,10 +9,13 @@ final class Init{
      * Store all the classes inside an array
      * @return array Full list of classes
      */
+    /* Bu bölümde kullanılacak sınıfları tanımlamak gerekir.*/
     public static function get_services(){
         return [
-			Pages\Dashboard::class,
-			Base\Enqueue::class,
+            Pages\Dashboard::class,
+            
+            /*
+            Base\Enqueue::class,
 			Base\SettingsLinks::class,
 			Base\CustomPostTypeController::class,
 			Base\CustomTaxonomyController::class,
@@ -22,7 +25,8 @@ final class Init{
 			Base\TemplateController::class,
 			Base\AuthController::class,
 			Base\MembershipController::class,
-			Base\ChatController::class,
+            Base\ChatController::class,
+            */
         ];
     }
 
