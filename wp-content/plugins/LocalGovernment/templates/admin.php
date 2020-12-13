@@ -1,11 +1,11 @@
 <div class="wrap">
-    <h1>IBBHABER Base Page (Required for Plugin Development)</h1>
+    <h1>IBB Haber Eklentisinin Anasayfasına Hoşgeldiniz!</h1>
     <?php settings_errors(); ?>
 
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab-1"> Manage Settings </a></li>
-        <li><a href="#tab-2"> Updates </a></li>
-        <li><a href="#tab-3"> About </a></li>
+        <li class="active"><a href="#tab-1"> Ayarları Yönetme Sayfası </a></li>
+        <li><a href="#tab-2"> Güncellemeler </a></li>
+        <li><a href="#tab-3"> Hakkında </a></li>
     </ul>
 
     <div class="tab-content">
@@ -20,11 +20,11 @@
         </div>
 
         <div id="tab-2" class="tab-pane">
-            <h3>Updates</h3>
+            <h3>Güncellemeler Hakkında Bilgilendirmeler</h3>
         </div>
 
         <div id="tab-3" class="tab-pane">
-            <h3>About</h3>
+            <h3>Uygulama Hakkında Bilgiler</h3>
         </div>
         
     </div>

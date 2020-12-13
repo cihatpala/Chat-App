@@ -11,7 +11,7 @@ Author URI: cihatpala.com
 License: GPLv2 or latter
 */
 
-defined('ABSPATH') or die('Hey, you can\t access this file, you silly human!');
+defined('ABSPATH') or die('Bu dosyaya erişemezsiniz!');
 
 if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
 	require_once dirname( __FILE__ ) . '/vendor/autoload.php';

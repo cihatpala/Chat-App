@@ -18,15 +18,16 @@
         $this->plugin = plugin_basename( dirname(__FILE__, 3) ) . '/ibb-haber-eklenti.php';
 
         $this->managers = array(
-            'cpt_manager' => 'Activate CPT Manager',
-            'taxonomy_manager' => 'Activate Taxonomy Manager',
-            'media_widget' => 'IbbHaber Media Widget',
-            'gallery_manager' => 'Activate Gallary Manager',
-            'testimonial_manager' => 'Activate Testimonial',
-            'templates_manager' => 'Activate Templates Manager',
-            'login_manager' => 'Activate Login Manager',
-            'membership_manager' => 'Activate Membership Manager',
-            'chat_manager' => 'Activate Chat Manager'
+            'news_manager' => 'Haberleri Düzenle',
+            //'cpt_manager' => 'Haber Düzenleme',
+            //'taxonomy_manager' => 'Activate Taxonomy Manager',
+            //'media_widget' => 'IbbHaber Media Widget',
+            //'gallery_manager' => 'Activate Gallary Manager',
+            //'testimonial_manager' => 'Activate Testimonial',
+            //'templates_manager' => 'Activate Templates Manager',
+            // 'login_manager' => 'Activate Login Manager',
+            // 'membership_manager' => 'Activate Membership Manager',
+            // 'chat_manager' => 'Activate Chat Manager'
         );
      }
 

@@ -39,8 +39,8 @@ class Dashboard extends BaseController{
         $this->pages = array( 
         
             array(
-                'page_title' => 'Ibb Haber Pluginssss', 
-                'menu_title' => 'Ibb Haber Plugin', 
+                'page_title' => 'IBB Haber Eklenti', 
+                'menu_title' => 'IBB Haber Eklentisi', 
                 'capability' => 'manage_options', 
                 'menu_slug' => 'ibbhaber_plugin', 
                 'callback' => array( $this->callbacks, 'adminDashboard'), 

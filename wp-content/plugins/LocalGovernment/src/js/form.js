@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', function(e){
             nonce: testimonialForm.querySelector('[name = "nonce"]').value
         }
         console.log(data);
+        console.log('asd')
+
 
         //validate everything
         if(!data.name){

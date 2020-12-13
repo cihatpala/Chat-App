@@ -39,8 +39,9 @@ var mapURL       = './';
 var jsSRC        = './src/js/';
 var jsAdmin      = 'myscript.js';
 var jsForm       = 'form.js';
+var jsSpinner    = 'newsmainpage.js';
 var jsSlider     = 'slider.js';
-var jsFiles      = [jsAdmin, jsForm, jsSlider];
+var jsFiles      = [jsSpinner, jsAdmin, jsForm, jsSlider];
 var jsURL        = './assets/';
 
 var styleWatch   = './src/scss/**/*.scss';

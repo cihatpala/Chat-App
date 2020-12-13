@@ -1,11 +1,11 @@
 <div class="wrap">
-    <h1>Burası CPT</h1>
+    <h1>Yayımlamak istediğiniz tüm şehirler burada!</h1>
     <?php settings_errors(); ?>
 
 
 
     <ul class="nav nav-tabs">
-        <li class="<?php echo !isset($_POST["edit_post"]) ? 'active' : ''  ?>"><a href="#tab-1"> Your Custom Post Type </a></li>
+        <li class="<?php echo !isset($_POST["edit_post"]) ? 'active' : ''  ?>"><a href="#tab-1"> Senin Özel Gönderi Alanın </a></li>
         <li class="<?php echo isset($_POST["edit_post"]) ? 'active' : ''  ?>">
             <a href="#tab-2"> 
              <?php echo isset($_POST["edit_post"]) ? 'Edit' : 'Add'  ?> Custom Post Type 
@@ -17,20 +17,21 @@
 
     <div class="tab-content">
         <div id="tab-1" class="tab-pane <?php echo !isset($_POST["edit_post"]) ? 'active' : ''  ?>">
-            <h3> Manage Your Custom Post Types </h3>
+            <h3> Haberlerinizi Buradan Yönetebilirsiniz. </h3>
 
             <?php
-                // if( ! get_option('ibbhaber_plugin_cpt' )){   
-                //     $options = array();
-                // }else {
-                //     $options = get_option('ibbhaber_plugin_cpt');
-                // }
-
-                //if-else'in aynısı aşağıda.
-                //$options = ! get_option('ibbhaber_plugin_cpt' ) ? array() : get_option('ibbhaber_plugin_cpt');
-
-                //bu da aynı ve CustomPostTypeController.php'de de kullanıldı.
                 $options = get_option('ibbhaber_plugin_cpt' ) ?: array();
+                $sehirler = array('ANKARA','ADIYAMAN','ANTALYA','AMASYA','ARDAHAN','GÜMÜŞHANE','İSTANBUL','KOCAELİ');
+
+                foreach ($sehirler as $sehir) { 
+                    echo '<div class="main-dist">
+                        <img class="dist-photo" src="https://www.ozyegin.edu.tr/sites/default/files/upload/Uluslararasi/ozu-istanbul.png">'
+                        .'<b>'.$sehir.' HABERLERİ </b>
+                        </div>';}
+
+
+
+
 
                 echo '<table class="cpt-table"><tr><th>ID</th><th>Singular Name</th><th>Plural Name</th><th class="text-center">Public</th><th class="text-center">Archive</th><th class="text-center">Actions</th></tr>';
 

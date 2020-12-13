@@ -20,7 +20,7 @@
     }
 
     public function adminSectionManager( $input){
-        echo 'Manage the Sections and Features this Plugin by activating the checkboxes from the following list.';
+        echo 'Aşağıdaki listeden onay kutularını etkinleştirerek bu Eklentinin Bölümleri ve Özelliklerini yönetebilirsiniz.';
     }
 
     public function checkboxField($args){

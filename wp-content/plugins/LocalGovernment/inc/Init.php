@@ -13,7 +13,9 @@ final class Init{
     public static function get_services(){
         return [
             Pages\Dashboard::class,
-            
+            Base\Enqueue::class,
+            Base\SettingsLinks::class,
+            NewsBase\NewsController::class,
             /*
             Base\Enqueue::class,
 			Base\SettingsLinks::class,

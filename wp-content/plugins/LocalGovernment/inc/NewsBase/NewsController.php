@@ -2,45 +2,65 @@
 /**
  * @package  ibbhaber
  */
-namespace Inc\Base;
+namespace Inc\NewsBase;
 
 use Inc\Api\SettingsApi;
 use Inc\Base\BaseController;
 use Inc\Api\Callbacks\AdminCallbacks;
-use Inc\Api\Callbacks\TestimonialCallbacks;
+use Inc\Api\Callbacks\NewsCallbacks;
 /**
 * 
 */
-class TestimonialController extends BaseController
+class NewsController extends BaseController
 {
 	public $settings;
 
-	public $callbacks;
+	public $callbacks; //NewsCallbacks.php ile ilgili
 
 	public $subpages = array();
+	
 
 	public function register()
 	{
-		if ( ! $this->activated( 'testimonial_manager' ) ) return;
+		if ( ! $this->activated( 'news_manager' ) ) return; //BaseController'daki news_manager aktif değilse menüde gösterme!
 
 		$this->settings = new SettingsApi();
-		$this->callbacks = new TestimonialCallbacks();
+		$this->callbacks = new NewsCallbacks(); //NewsCallbacks.php ile ilgili
 
 		add_action('init', array($this,'testimonial_cpt'));
 
-		add_action('add_meta_boxes', array($this,'add_meta_boxes'));
-		add_action('save_post', array($this,'save_meta_box'));
+		//add_action('add_meta_boxes', array($this,'add_meta_boxes'));
+		//add_action('save_post', array($this,'save_meta_box'));
 		add_action('manage_testimonial_posts_columns',array($this,'set_custom_columns'));
 		add_action('manage_testimonial_posts_custom_column',array($this, 'set_custom_columns_data'),10, 2);
 		add_filter('manage_edit-testimonial_sortable_columns', array($this, 'set_custom_columns_sortable'));
 
-		$this->setShortcodePage();
-		add_shortcode('testimonial-form', array($this, 'testimonial_form'));
-		add_shortcode('testimonial-slideshow', array($this, 'testimonial_slideshow'));
+		$this->setPages();
+		$this->setUsingPage();
+		// add_shortcode('testimonial-form', array($this, 'testimonial_form'));
+		// add_shortcode('testimonial-slideshow', array($this, 'testimonial_slideshow'));
 		add_action('wp_ajax_submit_testimonial', array($this,'submit_testimonial'));
 		add_action('wp_ajax_nopriv_submit_testimonial', array($this,'submit_testimonial'));
+		$this->settings->addPages( $this->pages )->register();
 
 	}
+
+	public function setPages(){
+
+        $this->pages = array( 
+        
+            array(
+                'page_title' => 'IBB, Haberleri Yönetin', 
+                'menu_title' => 'Haberleri Yönetin (IBB Eklenti) ', 
+                'capability' => 'manage_options', 
+                'menu_slug' => 'ibbhaber_news_management', 
+                'callback' => array( $this->callbacks, 'newsMainPage'), 
+                'icon_url' => 'dashicons-admin-tools', 
+                'position' => 10
+            )
+            );
+	}
+	
 	public function submit_testimonial(){
 		if(! DOING_AJAX || ! check_ajax_referer('testimonial_nonce', 'nonce')){
 			$this->return_json('error');
@@ -87,31 +107,31 @@ class TestimonialController extends BaseController
 	}
 
 
-	public function testimonial_form(){
-		ob_start();
-		echo "<link rel=\"stylesheet\" href=\"$this->plugin_url/assets/form.css\" type=\"text/css\" media=\"all\"/>";
-		require_once("$this->plugin_path/templates/contact-form.php");
-		echo "<script src=\"$this->plugin_url/src/js/form.js\"></script>";
-		return ob_get_clean();
-	}
+	// public function testimonial_form(){
+	// 	ob_start();
+	// 	echo "<link rel=\"stylesheet\" href=\"$this->plugin_url/assets/form.css\" type=\"text/css\" media=\"all\"/>";
+	// 	require_once("$this->plugin_path/templates/contact-form.php");
+	// 	echo "<script src=\"$this->plugin_url/src/js/form.js\"></script>";
+	// 	return ob_get_clean();
+	// }
 
-	public function testimonial_slideshow(){
-		ob_start();
-		echo "<link rel=\"stylesheet\" href=\"$this->plugin_url/assets/slider.css\" type=\"text/css\" media=\"all\"/>";
-		require_once("$this->plugin_path/templates/slider.php");
-		echo "<script src=\"$this->plugin_url/src/js/slider.js\"></script>";
-		return ob_get_clean();
-	}
+	// public function testimonial_slideshow(){
+	// 	ob_start();
+	// 	echo "<link rel=\"stylesheet\" href=\"$this->plugin_url/assets/slider.css\" type=\"text/css\" media=\"all\"/>";
+	// 	require_once("$this->plugin_path/templates/slider.php");
+	// 	echo "<script src=\"$this->plugin_url/src/js/slider.js\"></script>";
+	// 	return ob_get_clean();
+	// }
 
-	public function setShortcodePage(){
+	public function setUsingPage(){
 		$subpage = array(
 			array(
-				'parent_slug' => 'edit.php?post_type=testimonial',
-				'page_title' => 'Kısa Kodlar',
-				'menu_title' => 'Shortcodes',
-				'capability' => 'manage_options',
-				'menu_slug' => 'ibbhaber_testimonial_shortcode',
-				'callback' => array($this->callbacks, 'shortcodePage')
+				'parent_slug' => 'ibbhaber_news_management',
+				'page_title' => 'Kullanım Klavuzu Sayfası',
+				'menu_title' => 'Kullanım Klavuzu',
+				'capability' => 'moderate_comments',
+				'menu_slug' => 'ibbhaber_show_district',
+				'callback' => array($this->callbacks, 'newsUsingPage')
 			)
 		);
 
@@ -119,25 +139,54 @@ class TestimonialController extends BaseController
 	}
 
 
-	public function testimonial_cpt(){
+	public function testimonial_cpt(){ //ADMİN SAYFASINDA HABERLER
 
 		$labels = array(
-			'name' => 'Testimonials',
-			'singular_name' => 'Testimonial'
+			'name' => 'IBB HABER',
+			'singular_name' => 'IBB HABER TEKİL'
 		);
 
-		$args = array(
+		$args = array( //ADMİN SAYFASINDA HABERLER YAZAN BÖLÜM
 			'labels' => $labels,
 			'public' => true,
 			'has_archive' => false,
-			'menu_icon' => 'dashicons-testimonial',
+			'menu_icon' => 'dashicons-align-left',
 			'exclude_from_search' => true,
 			'publicly_queryable' => false,
 			'supports' => array('title', 'editor') 
 
 		);
-		register_post_type('testimonial', $args);
+        register_post_type('testimonial', $args);
+
+
+		//Yeni post girme yolu
+        // $my_post = array(
+        //     'post_title'    => wp_strip_all_tags( 'asdasdsadadasd'),
+        //     'post_content'  => 'Buralarda html çalışıyür babba',
+        //     'post_status'   => 'publish',
+        //     'post_author'   => 1,
+        //     'post_category' => array( 1,40 )
+        //   );
+
+        //   $post_id = get_the_ID($my_post);
+        //   echo $post_id;
+
+          //$categories = ['istanbul','asd'];
+
+          //wp_create_categories( $categories, $post_id );
+
+          // Insert the post into the database
+          //wp_insert_post( $my_post );
+
 	}
+
+
+
+    // Create post object
+/*
+
+	//Burası da Yazar Adı, Yazar Maili, featured, Approved gibi özel girdilerin yapıldığı yer.
+
 
 	public function add_meta_boxes(){
 		add_meta_box(
@@ -148,9 +197,9 @@ class TestimonialController extends BaseController
 			'side',
 			'default'
 		);
-
 	}
 
+	
 	public function render_features_box($post)
 	{
 		wp_nonce_field( 'ibbhaber_testimonial', 'ibbhaber_testimonial_nonce' );
@@ -162,7 +211,7 @@ class TestimonialController extends BaseController
 		$featured = isset($data['featured']) ? $data['featured'] : false;
 		?>
 		<p>
-			<label class="meta-label" for="ibbhaber_testimonial_author">Author Name</label>
+			<label class="meta-label" for="ibbhaber_testimonial_author">Yazar Adı</label>
 			<input type="text" id="ibbhaber_testimonial_author" name="ibbhaber_testimonial_author" class="widefat" value="<?php echo esc_attr( $name ); ?>">
 		</p>
 		<p>
@@ -188,6 +237,7 @@ class TestimonialController extends BaseController
 		<?php
 	}
 
+	*/
 
 
 	public function render_author_box($post){
@@ -231,10 +281,10 @@ class TestimonialController extends BaseController
 		$title = $columns['title'];
 		$date = $columns['date'];
 		unset($columns['title'], $columns['date']);
-		$columns['name'] = 'Author Name';
+		$columns['name'] = 'Yazar Adı';
 		$columns['title'] = $title;
-		$columns['approved'] = 'Approved';
-		$columns['featured'] = 'Featured';
+		$columns['approved'] = 'Approved Ne ya';
+		$columns['featured'] = 'Featured ne olum bunlarla işim yok';
 		$columns['date'] = $date;
 		return $columns;
 	}
