@@ -81,8 +81,10 @@
 
                             <div class="search-box">
                             <input type="text" placeholder="Aramaya Başla" />
+                            <?php ob_start(); echo "<script src=\"$this->plugin_url/src/js/newsmainpage.js\"></script>"; ?>
                             </div>
                         </div>
+
                     </div>
             </div>
 
