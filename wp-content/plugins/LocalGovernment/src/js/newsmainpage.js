@@ -8,10 +8,8 @@ selected.addEventListener("click", () => {
   optionsContainer.classList.toggle("active");
   searchBox.value = "";
   filterList("");
-
   if (optionsContainer.classList.contains("active")) {
     searchBox.focus();
-
   }
 });
 
