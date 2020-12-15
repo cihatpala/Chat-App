@@ -1,8 +1,7 @@
 <div class="wrap">
     <h1>Haber Düzenleme Paneli'ne Hoşgeldin!</h1>
     <?php settings_errors(); ?>
-
-
+    <?php require_once("$this->plugin_path/templates/cities.php"); ?>
 
     <ul class="nav nav-tabs">
         <li class="<?php echo !isset($_POST["edit_post"]) ? 'active' : ''  ?>"><a href="#tab-1"> İl - İlçe Seçimi</a></li>
@@ -20,75 +19,37 @@
         <div id="tab-1" class="tab-pane <?php echo !isset($_POST["edit_post"]) ? 'active' : ''  ?>">
             
             <div class="tab-main-page-top">
-                    <div class="container">
-                        <h2>İl Kategorisi</h2>
-                        <div class="select-box">
-                            <div class="options-container">
-                            
-
-                                <? //Burası Otomatikleştirmeye Çalıştığım Kısım?>
+                
+                <?php //Açılır Arama Yapılan Bölüm ?>
+                <div class="container">
+                    <h2>İl Kategorisi</h2>
+                    <div class="select-box">
+    
+                        <div class="options-container">       
+                            <? //Burası Otomatikleştirmeye Çalıştığım Kısım?>      
+                            <?php
+                            foreach ($cities as $value) {  ?>
                                 <div class="option">
-                                    <input name="category" type="radio" class="radio" id="istanbul"  />
-                                    <label for="asdasd">İSTANBUL</label>
+                                    <input name="province" type="radio" class="radio" id="<?php echo $value['title']?>"  />
+                                    <label for="province"><?php echo strtoupper(utf8_decode($value['title']))?></label>
                                 </div>
-
-                                <?php //Burası Manuel Yapılan Kısım ?>
-                                <div class="option">
-                                    <input type="radio" class="radio" id="istanbul" name="category" />
-                                    <label for="asdasd">İSTANBUL</label>
-                                </div>
-
-                                <div class="option">
-                                    <input type="radio" class="radio" id="film" name="category" />
-                                    <label for="film">Film & Animation</label>
-                                </div>
-
-                                <div class="option">
-                                    <input type="radio" class="radio" id="science" name="category" />
-                                    <label for="science">Science & Technology</label>
-                                </div>
-
-                                <div class="option">
-                                    <input type="radio" class="radio" id="art" name="category" />
-                                    <label for="art">Art</label>
-                                </div>
-
-                                <div class="option">
-                                    <input type="radio" class="radio" id="music" name="category" />
-                                    <label for="music">Music</label>
-                                </div>
-
-                                <div class="option">
-                                    <input type="radio" class="radio" id="travel" name="category" />
-                                    <label for="travel">Travel & Events</label>
-                                </div>
-
-                                <div class="option">
-                                    <input type="radio" class="radio" id="sports" name="category" />
-                                    <label for="sports">Sports</label>
-                                </div>
-
-                                <div class="option">
-                                    <input type="radio" class="radio" id="news" name="category" />
-                                    <label for="news">News & Politics</label>
-                                </div>
-
-                                <div class="option">
-                                    <input type="radio" class="radio" id="tutorials" name="category" />
-                                    <label for="tutorials">Tutorials</label>
-                                </div>
-                                </div>
-
-                                <div class="selected" >
-                                    İl Seçimi
-                                </div>
-
-                                <div class="search-box">
-                                    <input type="text" placeholder="Aramaya Başla" />
-                                    <?php ob_start(); echo "<script src=\"$this->plugin_url/src/js/newsmainpage.js\"></script>"; ?>
-                                </div>
+                            <?php
+                            }
+                            ?>
                         </div>
+                        
+
+                        <div class="selected" >
+                            İl Seçimi
+                        </div>
+
+                        <div class="search-box">
+                            <input type="text" placeholder="Aramaya Başla" />
+                            <?php ob_start(); echo "<script src=\"$this->plugin_url/src/js/newsmainpage.js\"></script>"; ?>
+                        </div>
+
                     </div>
+                </div>
             </div>
 
 
@@ -159,3 +120,4 @@
         
     </div>
 </div>
+
